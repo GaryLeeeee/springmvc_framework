@@ -1,5 +1,6 @@
 package com.garylee.springmvcframework.server;
 
+import com.garylee.springmvcframework.factory.HtmlFactory;
 import com.garylee.springmvcframework.utils.Config;
 
 import java.io.*;
@@ -68,12 +69,28 @@ public class HttpServer implements Runnable{
                 if(content.contains("/favicon.ico"))
                     continue;
                 System.out.println("");
-                MappingHandler.handler(path);//处理请求的url,获取到对应的class和method并invoke
+                printWriter = new PrintWriter(socket.getOutputStream());
+                printStream = new PrintStream(socket.getOutputStream());
+                MappingHandler.handler(path,getPrintWriter(),getPrintStream());//处理请求的url,获取到对应的class和method并invoke
+
             } catch (Exception e) {
 
             }
         }
     }
+
+    public PrintWriter getPrintWriter() {
+        return printWriter;
+    }
+
+    public void setPrintWriter(PrintWriter printWriter) {
+        this.printWriter = printWriter;
+    }
+
+    public PrintStream getPrintStream() {
+        return printStream;
+    }
+
     public static void main(String[] args) {
         new HttpServer();
     }

@@ -18,7 +18,9 @@ import java.util.Set;
  */
 
 public class ClassFactory {
-    private static String projectPath = "com\\garylee\\springmvcframework";//包路径
+    // TODO: 2018/8/19 0019 考虑是要扫src包还是target包
+//    private static String projectPath = "com\\garylee\\springmvcframework";//包路径
+    private static String projectPath = "com\\garylee\\springmvcframework";//包路径(修改为src)
     private static Set<Class<?>> set = new HashSet<Class<?>>();//存放该项目包下所有类
 //    private static Map<String,String> htmlMap;//视图定位,存放html名(不包含后缀),返回对应的html文件
     private static Map<String,MethodMap> methodMap;//key为url,value为映射的方法
@@ -44,6 +46,7 @@ public class ClassFactory {
 
                         MethodMap method1 = new MethodMap(requestMapping.value(),requestMapping.method(),isBody,method);
                         methodMap.put(requestMapping.value(),method1);
+                        System.out.println(requestMapping.value()+"初始化成功!");
 
                         classMap.put(requestMapping.value(),clazz);
                     }
@@ -52,7 +55,7 @@ public class ClassFactory {
         }
     }
     public static void main(String[] args){
-        scan();
+        initSet(path);
     }
     private static void initSet(String path){
         File[] files = new File(path).listFiles();
@@ -62,7 +65,7 @@ public class ClassFactory {
             if(file.getName().contains(".java")){
                 String paths = file.getAbsolutePath();
                 String className = paths.substring(paths.indexOf(projectPath)).replace(".java","").replace(File.separator,".");
-                System.out.println(className);//Class.forName的值
+//                System.out.println(className);//Class.forName的值
 //                System.out.println(Class.forName(className));
                 try {
                     set.add(Class.forName(className));

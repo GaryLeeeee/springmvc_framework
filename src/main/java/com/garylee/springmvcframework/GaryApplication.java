@@ -1,5 +1,8 @@
 package com.garylee.springmvcframework;
 
+import com.garylee.springmvcframework.factory.ClassFactory;
+
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -7,6 +10,6 @@ import java.util.Map;
  */
 public class GaryApplication {
     public static void main(String[] args) throws ClassNotFoundException {
-        System.out.println(Class.forName("com.garylee.springmvcframework.GaryApplication"));
+
     }
 }

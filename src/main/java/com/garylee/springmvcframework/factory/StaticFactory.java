@@ -39,9 +39,14 @@ public class StaticFactory {
             }
         }
     }
-
+    public static File parseStatic(String url){
+        File file = new File(staticPath,url);
+//        System.out.println("exists?"+file.exists());
+        return file;
+    }
     public static void main(String[] args) {
-        getStatic();
-        System.out.println(staticMap);
+//        getStatic();
+//        System.out.println(staticMap);
+        System.out.println(parseStatic("abc.txt"));
     }
 }
