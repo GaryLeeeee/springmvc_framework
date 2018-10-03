@@ -7,10 +7,10 @@ import java.lang.reflect.Method;
  */
 public class MethodMap {
     private String name;
-    private String url;
-    private String type;
-    private boolean isBody;
-    private Method method;
+    private String url;//请求资源(/***)
+    private String type;//请求类型(get/post等)
+    private boolean isBody;//是否是ResponseBody
+    private Method method;//注释在哪一个方法
     public MethodMap(String url, String type, boolean isBody, Method method) {
         this.name = method.getName();
         this.url = url;

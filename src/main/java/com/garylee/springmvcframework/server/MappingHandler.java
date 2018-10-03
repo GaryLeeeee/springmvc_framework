@@ -23,19 +23,21 @@ public class MappingHandler {
     //静态方法(第一次调用该类则会调用，用于初始化map)
     static{
         System.out.println("mapping开始初始化...");
-        ClassFactory.scan();
-        methodMap = ClassFactory.getMethodMap();
-        classMap = ClassFactory.getClassMap();
+        ClassFactory.scan();//初始化数据
+        methodMap = ClassFactory.getMethodMap();//存放Map<url,MethodMap>
+        classMap = ClassFactory.getClassMap();//存放url和对应的类
 
-        htmlMap = HtmlFactory.getHtml();
+        htmlMap = HtmlFactory.getHtml();//初始化模板
         System.out.println("mapping初始化完毕!");
     }
+    //处理
     public static void handler(String url, PrintWriter printWriter, PrintStream printStream){
         MethodMap methodName = methodMap.get(url);
         try {
+            //请求的是文件，则返回静态文件(有后缀名的)
             if(url.contains(".")){
                 System.out.println("用户请求静态资源:"+url);
-                File file = StaticFactory.parseStatic(url);
+                File file = StaticFactory.parseStatic(url);//通过路径+文件名构造一个File对象
                 if(file.exists()){
                     FileInputStream fileInputStream = new FileInputStream(file);
                     byte[] bytes = new byte[(int) file.length()];
@@ -47,22 +49,36 @@ public class MappingHandler {
                 }else {
                     System.out.println("静态资源"+url+"不存在!");
                 }
+                //此处已判断请求资源为静态资源，故不用进行mapping映射
                 return;//!!!!!使用return可以强制中断代码，使后续代码不再执行(类似while的break)
             }
             Class clazz = classMap.get(url);//通过url确定是哪个controller
             Object object = clazz.newInstance();//通过controller对应的类来实例化一个object
             // TODO: 2018/8/19 0019 当需要参数的时候应该怎么赋值？ 
 //            methodName.getMethod().invoke(object,null);
+            //当没有ResponseBody，则返回值为String，并解析为跳转路径
+            //否则，将返回指定的数据类型，如json
             if(!methodName.isBody()){
+                /**
+                 *  invoke参数(obj,...args)
+                 *  obj - 从中调用底层方法的对象
+                 args - 用于方法调用的参数
+                 其中...args表示可以传任意个参数，将会转换为一个数组存储，此处的...args表示要调用方法的参数(不定)
+                 */
                 String fileName = methodName.getMethod().invoke(object,null).toString();
                 if(htmlMap.containsKey(fileName)){
                     String html = htmlMap.get(fileName);
-                    System.out.println("html:"+html);
+//                    System.out.println("html:"+html);//输出即将返回的templates(html)的内容
                     printWriter.println("HTTP/1.1 200 OK");
                     printWriter.write(html);
                     printWriter.flush();
                 }else {
                     System.err.println("未找到"+url+"对应的method!请检查htmlMap的完整性!");
+                    printWriter.println("HTTP/1.1 200 OK");
+                    printWriter.println("Content-type:text/html;charset=utf-8");//乱码则加上这行
+                    printWriter.println();//header和body间有个空行(注意!)
+                    printWriter.println("<h1 style='color:red'>未找到"+url+"对应的templates!请检查htmlMap的完整性!</h1>");
+                    printWriter.flush();
                 }
             }else{
                 Object o = methodName.getMethod().invoke(object,null);

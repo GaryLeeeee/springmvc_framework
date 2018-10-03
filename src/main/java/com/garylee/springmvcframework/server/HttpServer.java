@@ -16,8 +16,8 @@ public class HttpServer implements Runnable{
     private ServerSocket serverSocket = null;
 //    private Socket socket = null;
     private BufferedReader bufferedReader = null;
-    private PrintWriter printWriter = null;
-    private PrintStream printStream = null;
+    private PrintWriter printWriter = null;//用于返回html文件内容，用字符流就可以
+    private PrintStream printStream = null;//用于返回静态文件，需要用流进行传输
     private String method = null;
     private String path = null;
     private Map<String,String> socketValues = null;

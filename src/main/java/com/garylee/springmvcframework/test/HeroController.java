@@ -12,8 +12,10 @@ import java.lang.reflect.Method;
 @Controller
 public class HeroController {
     @RequestMapping("/url")
-    public void url(){
+    @ResponseBody
+    public String url(){
         System.out.println("this is index!");
+        return "index~~";
     }
     @RequestMapping("/getOne")
     @ResponseBody

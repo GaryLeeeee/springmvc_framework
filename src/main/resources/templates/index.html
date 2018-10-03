@@ -6,7 +6,18 @@
 </head>
 <body>
     <h1>it is index.html</h1>
+    <form method="post" action="/login">
+        账号:<input type="text" name="username"/><br>
+        密码:<input type="password" name="password"/><br>
+        <input type="submit" value="登陆(post)"/><br>
+    </form>
+    <form method="get" action="/login">
+        账号:<input type="text" name="username"/><br>
+        密码:<input type="password" name="password"/><br>
+        <input type="submit" value="登陆(get)"/><br>
+    </form>
     <img src="/img/detail.jpg">
     <img src="http://p8iu5y6va.bkt.clouddn.com/60.jpg">
+
 </body>
 </html>
