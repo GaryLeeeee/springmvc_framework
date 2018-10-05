@@ -11,17 +11,18 @@ import java.lang.reflect.Method;
  */
 @Controller
 public class HeroController {
-    @RequestMapping("/url")
+    @RequestMapping("/login")
     @ResponseBody
-    public String url(){
-        System.out.println("this is index!");
-        return "index~~";
+    public String login(String username,String password){
+        System.out.println("用户:"+username+",密码:"+password+"---登陆成功!");
+        return "index~~";//有@ResponseBody的话就是直接输出该字符串
     }
-    @RequestMapping("/getOne")
-    @ResponseBody
-    public int get(int id){
-        return id*2;
-    }
+//    @RequestMapping("/getOne")
+//    @ResponseBody
+//    public int get(int id){
+//        System.out.println(id*3);
+//        return id*2;
+//    }
     @RequestMapping("/index")
     public String index(){
         return "index";

@@ -71,7 +71,9 @@ public class HttpServer implements Runnable{
                 System.out.println("");
                 printWriter = new PrintWriter(socket.getOutputStream());
                 printStream = new PrintStream(socket.getOutputStream());
-                MappingHandler.handler(path,getPrintWriter(),getPrintStream());//处理请求的url,获取到对应的class和method并invoke
+                //传参数,get的话就传url的?后面的,post就传参数部分
+                String params = (method.equalsIgnoreCase("GET"))?path:stringBuffer.toString();
+                MappingHandler.handler(path,params,getPrintWriter(),getPrintStream());//处理请求的url,获取到对应的class和method并invoke
 
             } catch (Exception e) {
 
